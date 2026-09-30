@@ -1,0 +1,20 @@
+<%- include("partials/header", { title: post.title }) %>
+
+<article class="post-detail">
+  <div class="post-detail-head">
+    <h1><%= post.title %></h1>
+    <time class="post-row-date"><%= new Date(post.created_at).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) %></time>
+  </div>
+
+  <div class="post-body"><%= post.content %></div>
+
+  <div class="form-actions">
+    <a href="/posts" class="btn btn-ghost">&larr; Kembali</a>
+    <a href="/posts/<%= post.id %>/edit" class="btn btn-secondary">Edit</a>
+    <form method="POST" action="/posts/<%= post.id %>?_method=DELETE" onsubmit="return confirm('Hapus catatan ini?');">
+      <button type="submit" class="btn btn-danger">Hapus</button>
+    </form>
+  </div>
+</article>
+
+<%- include("partials/footer") %>

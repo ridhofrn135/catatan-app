@@ -1,0 +1,24 @@
+<%- include("partials/header", { title: "Catatan" }) %>
+
+<div class="list-head">
+  <h1>Semua catatan</h1>
+  <p class="muted"><%= posts.length %> catatan tersimpan</p>
+</div>
+
+<% if (posts.length === 0) { %>
+  <div class="empty-state">
+    <p>Belum ada catatan.</p>
+    <a href="/posts/new" class="btn btn-primary">Tulis catatan pertama</a>
+  </div>
+<% } else { %>
+  <ul class="post-list">
+    <% posts.forEach(function(post) { %>
+      <li class="post-row">
+        <a href="/posts/<%= post.id %>" class="post-row-title"><%= post.title %></a>
+        <time class="post-row-date"><%= new Date(post.created_at).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" }) %></time>
+      </li>
+    <% }); %>
+  </ul>
+<% } %>
+
+<%- include("partials/footer") %>

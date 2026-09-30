@@ -1,0 +1,26 @@
+<%- include("partials/header", { title: "Edit catatan" }) %>
+
+<h1>Edit catatan</h1>
+
+<% if (errors && errors.length > 0) { %>
+  <ul class="error-list">
+    <% errors.forEach(function(err) { %>
+      <li><%= err.msg %></li>
+    <% }); %>
+  </ul>
+<% } %>
+
+<form method="POST" action="<%= formAction %>" class="post-form">
+  <label for="title">Judul</label>
+  <input type="text" id="title" name="title" value="<%= post.title || '' %>" required maxlength="200" />
+
+  <label for="content">Isi</label>
+  <textarea id="content" name="content" rows="12" required maxlength="10000"><%= post.content || '' %></textarea>
+
+  <div class="form-actions">
+    <a href="/posts/<%= post.id %>" class="btn btn-ghost">Batal</a>
+    <button type="submit" class="btn btn-primary">Simpan perubahan</button>
+  </div>
+</form>
+
+<%- include("partials/footer") %>
