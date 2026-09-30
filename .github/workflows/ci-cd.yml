@@ -51,33 +51,3 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/catatan-app:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/catatan-app:${{ github.sha }}
-
-  # ---------- 3. DEPLOY ----------
-  # Pilih SALAH SATU blok di bawah sesuai platform deploy kamu, lalu hapus yang lain.
-  # Semua secret (SSH key, token, dsb.) diisi lewat GitHub repo > Settings > Secrets and variables > Actions.
-  deploy:
-    name: Deploy
-    needs: docker
-    runs-on: ubuntu-latest
-    steps:
-      # --- OPSI A: Deploy ke VPS lewat SSH (paling umum untuk pemula) ---
-      - name: Deploy ke VPS via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          script: |
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/catatan-app:latest
-            docker stop catatan-app || true
-            docker rm catatan-app || true
-            docker run -d --name catatan-app \
-              -p 3000:3000 \
-              -v catatan-data:/app/data \
-              --restart unless-stopped \
-              ${{ secrets.DOCKERHUB_USERNAME }}/catatan-app:latest
-
-      # --- OPSI B: Deploy ke Render/Railway/Fly.io ---
-      # Biasanya cukup connect repo GitHub kamu di dashboard platform tsb,
-      # lalu platform akan auto-deploy tiap ada push ke main.
-      # Hapus job "docker" di atas kalau pakai opsi ini (platform ini build image sendiri).
